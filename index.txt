@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TodoIt</title>
+    <script type="text/javascript" src="todo-it.js"></script>
+    <script>
+        // Example JavaScript for addTodo function
+        let todoList = [];
+ 
+        function addTodo() {
+            const todoInput = document.getElementById('todoInput');
+            if (todoInput == null) {
+                console.error('The todo input is missing from the page!');
+                return;
+            }
+ 
+            const newTodo = todoInput.value;
+ 
+            // verify that there is text
+            if ('' !== newTodo.trim()) {
+                console.log('Adding todo: ', newTodo);
+ 
+                // add the new item to the list
+                todoList.push(newTodo);
+ 
+                // keep the list sorted
+                todoList.sort();
+ 
+                console.log('New todo list: ', todoList);
+ 
+                // clear the input
+                todoInput.value = '';
+ 
+                // update the todo list display
+                updateTodoList();
+ 
+                // apply the todo list filter
+                filterTodoList();
+            }
+        }
+ 
+        function updateTodoList() {
+            const container = document.getElementById('todoListContainer');
+            if (todoList.length === 0) {
+                container.innerHTML = 'Nothing to do, hurray!';
+            } else {
+                container.innerHTML = '<ul>' + todoList.map(item => `<li>${item}</li>`).join('') + '</ul>';
+            }
+        }
+ 
+        function removeTodoListItem(itemToRemove) {
+            console.log("item to remove: ", itemToRemove);
+ 
+            todoList = todoList.filter((value) => {
+                return value !== itemToRemove;
+            });
+            // unsafe alternative: todoList.splice(...)
+ 
+            // update the todo list
+            updateTodoList();
+ 
+            // apply the todo filter
+            filterTodoList();
+        }
+ 
+        // You may want to define filterTodoList() if not already present in todo-it.js
+        function filterTodoList() {
+            // Filtering logic goes here
+        }
+    </script>
+</head>
+<body id="todoIt" style="text-align: center">
+    <h1>TodoIt</h1>
+    <h2>Add new items</h2>
+    <p>
+        What needs to be done?
+        <input type="text" id="todoInput" title="What should be added to the todo list?" onblur="addTodo()" />
+        <input type="button" value="Add todo" onclick="addTodo()" />
+    </p>
+ 
+    <h2>Current todo list</h2>
+    <p>
+        Filter: <input type="text" id="todoFilter" title="Filter for the todo list" onkeyup="filterTodoList()" onblur="filterTodoList()" />
+    </p>
+ 
+    <div id="todoListContainer">Nothing to do, hurray!</div>
+</body>
+</html>
